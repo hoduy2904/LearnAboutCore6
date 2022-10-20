@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Send mail</h1>
+
+@using (Html.BeginForm(FormMethod.Post)){
+    <div class="form-group">
+        <label>Email</label>
+        <input class="form-control" name="Email"/>
+    </div>
+    <div class="form-group">
+        <label>Subject</label>
+        <input class="form-control" name="Title" />
+    </div>
+
+    <div class="form-group">
+        <label>Body</label>
+        <textarea class="form-control" name="Body" ></textarea>
+    </div>
+    <button class="btn btn-primary mt-3" type="submit">Send</button>
+    <span>@ViewBag.Message</span>
+}
+
