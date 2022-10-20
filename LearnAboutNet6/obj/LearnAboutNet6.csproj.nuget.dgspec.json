@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\TTS\\Day13\\LearnAboutNet6\\LearnAboutNet6\\LearnAboutNet6.csproj": {}
+    "D:\\TTS\\Day13\\LearnAboutCore6\\LearnAboutNet6\\LearnAboutNet6.csproj": {}
   },
   "projects": {
-    "D:\\TTS\\Day13\\LearnAboutNet6\\LearnAboutNet6\\LearnAboutNet6.csproj": {
+    "D:\\TTS\\Day13\\LearnAboutCore6\\LearnAboutNet6\\LearnAboutNet6.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\TTS\\Day13\\LearnAboutNet6\\LearnAboutNet6\\LearnAboutNet6.csproj",
+        "projectUniqueName": "D:\\TTS\\Day13\\LearnAboutCore6\\LearnAboutNet6\\LearnAboutNet6.csproj",
         "projectName": "LearnAboutNet6",
-        "projectPath": "D:\\TTS\\Day13\\LearnAboutNet6\\LearnAboutNet6\\LearnAboutNet6.csproj",
+        "projectPath": "D:\\TTS\\Day13\\LearnAboutCore6\\LearnAboutNet6\\LearnAboutNet6.csproj",
         "packagesPath": "C:\\Users\\duy.ho\\.nuget\\packages\\",
-        "outputPath": "D:\\TTS\\Day13\\LearnAboutNet6\\LearnAboutNet6\\obj\\",
+        "outputPath": "D:\\TTS\\Day13\\LearnAboutCore6\\LearnAboutNet6\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\duy.ho\\AppData\\Roaming\\NuGet\\NuGet.Config",

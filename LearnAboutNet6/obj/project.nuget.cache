@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "O0xyYAkdYu8SeQ9P1+2Yx1BaVi/ZX4n6tDvOBPDHY6xRHgnMsJUJAFOGcV3ttR/jq6T0fKRxDVjPUmapxxqRNg==",
+  "dgSpecHash": "Y+d3FKGBfDgHPFavF89sIr1CwhxRcknvXh79C+GDfY1WrKqIY4Ry+B5Ldc9dbMETZ8CZ8bryi6+KWysn2ZTfyg==",
   "success": true,
-  "projectFilePath": "D:\\TTS\\Day13\\LearnAboutNet6\\LearnAboutNet6\\LearnAboutNet6.csproj",
+  "projectFilePath": "D:\\TTS\\Day13\\LearnAboutCore6\\LearnAboutNet6\\LearnAboutNet6.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\duy.ho\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\duy.ho\\.nuget\\packages\\messagepack\\2.1.152\\messagepack.2.1.152.nupkg.sha512",
