@@ -28,11 +28,16 @@ namespace LearnAboutNet6.Models
             {
                 UserName = "admin",
             };
-           hash.HashPassword(user, "admin");
+             user.PasswordHash= hash.HashPassword(user, "admin");
 
             builder.Entity<IdentityUser>().HasData(user);
+            builder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>
+            {
+                RoleId = user.Id,
+                UserId = role.Id
+            });
 
-            
+
         }
         
     }
