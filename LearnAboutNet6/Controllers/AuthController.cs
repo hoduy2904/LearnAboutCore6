@@ -44,9 +44,10 @@ namespace LearnAboutNet6.Controllers
                 }
                 ViewBag.Message = "Please input infomation";
                 return View(nameof(Index), (new AuthRequest { LoginRequest = loginRequest }));
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
-                ViewBag.Message=ex.Message;
+                ViewBag.Message = ex.Message;
                 return View(nameof(Index), (new AuthRequest { LoginRequest = loginRequest }));
 
             }
@@ -77,13 +78,16 @@ namespace LearnAboutNet6.Controllers
                             ViewBag.MessageRegister = "Please Check Mail";
                             return View(nameof(Index), new AuthRequest());
                         }
+
                         return View(nameof(Index), (new AuthRequest { RegisterRequest = registerRequest }));
                     }
                 }
                 return View(nameof(Index), (new AuthRequest { RegisterRequest = registerRequest }));
-            }catch (Exception ex)
+
+            }
+            catch (Exception ex)
             {
-                ViewBag.MessageRegister=ex.Message;
+                ViewBag.MessageRegister = ex.Message;
                 return View(nameof(Index), (new AuthRequest { RegisterRequest = registerRequest }));
 
             }
@@ -98,41 +102,57 @@ namespace LearnAboutNet6.Controllers
         [HttpGet]
         public async Task<IActionResult> ConfirmEmail(string token, string email)
         {
-            var user = await userManager.FindByEmailAsync(email);
-            if (user != null)
+            try
             {
-                var result = await userManager.ConfirmEmailAsync(user, token);
-                if (result.Succeeded)
+                var user = await userManager.FindByEmailAsync(email);
+                if (user != null)
                 {
-                    return Redirect("/Auth#Login");
+                    var result = await userManager.ConfirmEmailAsync(user, token);
+                    if (result.Succeeded)
+                    {
+                        return Redirect("/Auth#Login");
+                    }
                 }
+                return View(new { token = token, email = email });
             }
-            return CreatedAtAction(nameof(Login), ViewBag.Messeage);
+            catch (Exception ex)
+            {
+                ViewBag.Message = ex.Message;
+                return View(new { token = token, email = email });
+            }
         }
 
         [HttpPost]
         public async Task<ActionResult> ForgotPassword(string Email)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var user = await userManager.FindByEmailAsync(Email);
-                if (user == null)
+                if (ModelState.IsValid)
                 {
-                    // Don't reveal that the user does not exist or is not confirmed
-                    return View();
-                }
+                    var user = await userManager.FindByEmailAsync(Email);
+                    if (user == null)
+                    {
+                        // Don't reveal that the user does not exist or is not confirmed
+                        return View();
+                    }
 
-                var token = await userManager.GeneratePasswordResetTokenAsync(user);
-                var url = HttpContext.Request.Host + Url.Action(nameof(ResetPassword), "Auth", new { token, email = user.Email });
-                bool isSend = mailServices.SendMail("Reset Password", $"<a href='{url}'>Click to confirm</a>", user.Email);
-                if (isSend)
-                {
-                    ViewBag.Message = "Please check mail";
-                    return View();
+                    var token = await userManager.GeneratePasswordResetTokenAsync(user);
+                    var url = HttpContext.Request.Host + Url.Action(nameof(ResetPassword), "Auth", new { token, email = user.Email });
+                    bool isSend = mailServices.SendMail("Reset Password", $"<a href='{url}'>Click to confirm</a>", user.Email);
+                    if (isSend)
+                    {
+                        ViewBag.Message = "Please check mail";
+                        return View();
+                    }
                 }
+                ViewBag.Message = "Something error";
+                return View();
             }
-            ViewBag.Message = "Something error";
-            return View();
+            catch (Exception ex)
+            {
+                ViewBag.Message = ex.Message;
+                return View();
+            }
         }
         public IActionResult ResetPassword(string token, string email)
         {
@@ -141,25 +161,33 @@ namespace LearnAboutNet6.Controllers
         [HttpPost]
         public async Task<ActionResult> ResetPassword(ResetPasswordRequest resetPasswordRequest, [FromBody] string ConfirmPassword)
         {
-            if (resetPasswordRequest.Password.Equals(ConfirmPassword))
+            try
             {
-                var user = await userManager.FindByEmailAsync(resetPasswordRequest.Email);
-                if (user == null)
-                    return View();
-                var resetPassResult = await userManager.ResetPasswordAsync(
-                    user
-                    , resetPasswordRequest.Token,
-                    resetPasswordRequest.Password);
-
-                if (!resetPassResult.Succeeded)
+                if (resetPasswordRequest.Password.Equals(ConfirmPassword))
                 {
-                    ViewBag.Message = "Something error";
-                    return View(resetPasswordRequest);
+                    var user = await userManager.FindByEmailAsync(resetPasswordRequest.Email);
+                    if (user == null)
+                        return View(resetPasswordRequest);
+                    var resetPassResult = await userManager.ResetPasswordAsync(
+                        user
+                        , resetPasswordRequest.Token,
+                        resetPasswordRequest.Password);
+
+                    if (!resetPassResult.Succeeded)
+                    {
+                        ViewBag.Message = "Something error";
+                        return View(resetPasswordRequest);
+                    }
+                    return Redirect("/Auth#Login");
                 }
-                return Redirect("/Auth#Login");
+                ViewBag.Message = "Password not match";
+                return View(resetPasswordRequest);
             }
-            ViewBag.Message = "Password not match";
-            return View(resetPasswordRequest);
+            catch (Exception ex)
+            {
+                ViewBag.Message = ex.Message;
+                return View(resetPasswordRequest);
+            }
         }
 
     }
