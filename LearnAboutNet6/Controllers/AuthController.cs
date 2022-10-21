@@ -17,60 +17,76 @@ namespace LearnAboutNet6.Controllers
             this.signInManager = signInManager;
             this.mailServices = mailServices;
         }
-        public IActionResult Login()
+
+        public IActionResult Index()
         {
-            return View();
+            return View(new AuthRequest());
         }
 
         [HttpPost]
         public async Task<IActionResult> Login(LoginRequest loginRequest)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var user = userManager.Users.FirstOrDefault(x => x.Email.Equals(loginRequest.Username) || x.UserName.Equals(loginRequest.Username)&&x.EmailConfirmed==true);
-                if(user==null)
+                if (ModelState.IsValid)
                 {
-                    ViewBag.Message = "Account not Found or active";
-                    return View(loginRequest);
-                }    
-                var result = await signInManager.PasswordSignInAsync(user.UserName, loginRequest.Password, false, false);
-                if (result.Succeeded)
-                {
-                    return Redirect("/");
+                    var user = userManager.Users.FirstOrDefault(x => x.Email.Equals(loginRequest.Username) || x.UserName.Equals(loginRequest.Username) && x.EmailConfirmed == true);
+                    if (user == null)
+                    {
+                        ViewBag.Message = "Account not Found or not active";
+                        return View(nameof(Index), (new AuthRequest { LoginRequest = loginRequest }));
+                    }
+                    var result = await signInManager.PasswordSignInAsync(user.UserName, loginRequest.Password, false, false);
+                    if (result.Succeeded)
+                    {
+                        return Redirect("/");
+                    }
                 }
-            }
-            ViewBag.Message = "Please input infomation";
-            return View(loginRequest);
+                ViewBag.Message = "Please input infomation";
+                return View(nameof(Index), (new AuthRequest { LoginRequest = loginRequest }));
+            }catch (Exception ex)
+            {
+                ViewBag.Message=ex.Message;
+                return View(nameof(Index), (new AuthRequest { LoginRequest = loginRequest }));
 
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> Register(RegisterRequest registerRequest)
         {
-            if (ModelState.IsValid)
+            try
             {
-                if (registerRequest.Password.Equals(registerRequest.PasswordRepeat))
+                if (ModelState.IsValid)
                 {
-                    var user = new IdentityUser
+                    if (registerRequest.Password.Equals(registerRequest.PasswordRepeat))
                     {
-                        Email = registerRequest.Email,
-                        UserName = registerRequest.Username,
-                        EmailConfirmed = false
-                    };
+                        var user = new IdentityUser
+                        {
+                            Email = registerRequest.Email,
+                            UserName = registerRequest.Username,
+                            EmailConfirmed = false
+                        };
 
-                    var result = await userManager.CreateAsync(user, registerRequest.Password);
-                    if (result.Succeeded)
-                    {
-                        var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
-                        var url =HttpContext.Request.Scheme+"://"+ HttpContext.Request.Host + Url.Action(nameof(ConfirmEmail), "Auth", new { token, email = user.Email });
-                        bool isSend = mailServices.SendMail("Register Account", $"<a href='{url}'>Click to active Account</a>",user.Email);
-                        ViewBag.Message = "Please Check Mail";
-                        return View();
+                        var result = await userManager.CreateAsync(user, registerRequest.Password);
+                        if (result.Succeeded)
+                        {
+                            var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+                            var url = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host + Url.Action(nameof(ConfirmEmail), "Auth", new { token, email = user.Email });
+                            bool isSend = mailServices.SendMail("Register Account", $"<a href='{url}'>Click to active Account</a>", user.Email);
+                            ViewBag.MessageRegister = "Please Check Mail";
+                            return View(nameof(Index), new AuthRequest());
+                        }
+                        return View(nameof(Index), (new AuthRequest { RegisterRequest = registerRequest }));
                     }
-                    return View(user);
                 }
+                return View(nameof(Index), (new AuthRequest { RegisterRequest = registerRequest }));
+            }catch (Exception ex)
+            {
+                ViewBag.MessageRegister=ex.Message;
+                return View(nameof(Index), (new AuthRequest { RegisterRequest = registerRequest }));
+
             }
-            return View(registerRequest);
 
         }
 
@@ -88,7 +104,7 @@ namespace LearnAboutNet6.Controllers
                 var result = await userManager.ConfirmEmailAsync(user, token);
                 if (result.Succeeded)
                 {
-                    return Redirect("/Auth/Login");
+                    return Redirect("/Auth#Login");
                 }
             }
             return CreatedAtAction(nameof(Login), ViewBag.Messeage);
@@ -127,18 +143,20 @@ namespace LearnAboutNet6.Controllers
         {
             if (resetPasswordRequest.Password.Equals(ConfirmPassword))
             {
-
-
                 var user = await userManager.FindByEmailAsync(resetPasswordRequest.Email);
                 if (user == null)
                     return View();
-                var resetPassResult = await userManager.ResetPasswordAsync(user, resetPasswordRequest.Token, resetPasswordRequest.Password);
+                var resetPassResult = await userManager.ResetPasswordAsync(
+                    user
+                    , resetPasswordRequest.Token,
+                    resetPasswordRequest.Password);
+
                 if (!resetPassResult.Succeeded)
                 {
                     ViewBag.Message = "Something error";
                     return View(resetPasswordRequest);
                 }
-                return RedirectToAction("Login");
+                return Redirect("/Auth#Login");
             }
             ViewBag.Message = "Password not match";
             return View(resetPasswordRequest);

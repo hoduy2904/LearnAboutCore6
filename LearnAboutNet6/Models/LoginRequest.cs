@@ -4,9 +4,9 @@ namespace LearnAboutNet6.Models
 {
     public class LoginRequest
     {
-        [Required]
+        [Required(ErrorMessage = "Username cannot be left blank")]
         public string Username { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Password cannot be left blank")]
         public string Password { get; set; }
     }
 }

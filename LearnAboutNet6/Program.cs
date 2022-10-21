@@ -25,7 +25,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 }).AddEntityFrameworkStores<CoreContext>().AddDefaultTokenProviders()
 .Services.ConfigureApplicationCookie(config =>
 {
-    config.LoginPath = "/Auth/Login";
+    config.LoginPath = "/Auth#Login";
 });
 
 builder.Services.AddScoped<IMailServices, MailServices>();
@@ -55,11 +55,6 @@ app.UseEndpoints(endpoints =>
       pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
     );
 });
-app.MapControllerRoute(
-    name: "Register",
-    pattern: "Auth/Register",
-     defaults: new { controller = "Auth", action = "Login" }
-     );
 
 app.MapControllerRoute(
     name: "default",
