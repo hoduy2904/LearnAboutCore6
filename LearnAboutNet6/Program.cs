@@ -25,7 +25,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 }).AddEntityFrameworkStores<CoreContext>().AddDefaultTokenProviders()
 .Services.ConfigureApplicationCookie(config =>
 {
-    config.LoginPath = "/Auth#Login";
+    config.LoginPath = "/Auth";
 });
 
 builder.Services.AddScoped<IMailServices, MailServices>();
