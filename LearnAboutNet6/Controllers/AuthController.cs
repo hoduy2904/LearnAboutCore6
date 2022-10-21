@@ -31,17 +31,21 @@ namespace LearnAboutNet6.Controllers
                 if (ModelState.IsValid)
                 {
                     var user = userManager.Users.FirstOrDefault(x => x.Email.Equals(loginRequest.Username) || x.UserName.Equals(loginRequest.Username) && x.EmailConfirmed == true);
-                    if (user == null)
+                    if (user != null)
                     {
-                        ViewBag.Message = "Account not Found or not active";
+                        var result = await signInManager.PasswordSignInAsync(user.UserName, loginRequest.Password, false, false);
+                        if (result.Succeeded)
+                        {
+                            return Redirect("/");
+                        }
+                        ViewBag.Message = "Incorrect account or password";
                         return View(nameof(Index), (new AuthRequest { LoginRequest = loginRequest }));
                     }
-                    var result = await signInManager.PasswordSignInAsync(user.UserName, loginRequest.Password, false, false);
-                    if (result.Succeeded)
-                    {
-                        return Redirect("/");
-                    }
+
+                    ViewBag.Message = "Account not Found or not active";
+                    return View(nameof(Index), (new AuthRequest { LoginRequest = loginRequest }));
                 }
+
                 ViewBag.Message = "Please input infomation";
                 return View(nameof(Index), (new AuthRequest { LoginRequest = loginRequest }));
             }
@@ -113,12 +117,13 @@ namespace LearnAboutNet6.Controllers
                         return Redirect("/Auth#Login");
                     }
                 }
-                return View(new { token = token, email = email });
+                ViewBag.Message = "Not found user";
+                return View(nameof(Index));
             }
             catch (Exception ex)
             {
                 ViewBag.Message = ex.Message;
-                return View(new { token = token, email = email });
+                return View(nameof(Index));
             }
         }
 
