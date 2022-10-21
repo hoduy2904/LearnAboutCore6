@@ -36,7 +36,7 @@ namespace LearnAboutNet6.Controllers
                 var result = await signInManager.PasswordSignInAsync(user.UserName, loginRequest.Password, false, false);
                 if (result.Succeeded)
                 {
-                    return Redirect("/Admin");
+                    return Redirect("/");
                 }
             }
             ViewBag.Message = "Please input infomation";
