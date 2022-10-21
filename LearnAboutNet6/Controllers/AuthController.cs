@@ -19,6 +19,10 @@ namespace LearnAboutNet6.Controllers
         }
         public IActionResult Login()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return Redirect("/");
+            }
             return View();
         }
 

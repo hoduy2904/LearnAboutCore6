@@ -1,0 +1,16 @@
+﻿@addTagHelper "*, Microsoft.AspNetCore.Mvc.TagHelpers"
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+
+}
+@model Microsoft.AspNetCore.Identity.IdentityRole
+<h1>Edit Role</h1>
+
+@using (Html.BeginForm(FormMethod.Post)){
+    <input type="hidden" asp-for="Id"/>
+    <div class="form-control">
+        <label asp-for=Name></label>
+        <input class="form-control" asp-for="Name"/>
+    </div>
+    <button class="btn btn-primary" type="submit">Save</button>
+}

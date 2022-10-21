@@ -3,11 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LearnAboutNet6.Areas.admin.Controllers
 {
-    public class HomeController : BaseController
+    [Area("admin")]
+    [Authorize(Roles ="Admin")]
+    public class BaseController : Controller
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
     }
 }

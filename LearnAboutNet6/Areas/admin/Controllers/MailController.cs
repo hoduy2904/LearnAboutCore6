@@ -6,7 +6,7 @@ using LearnAboutNet6.Models;
 namespace LearnAboutNet6.Areas.admin.Controllers
 {
     [Area("Admin")]
-    public class MailController : Controller
+    public class MailController : BaseController
     {
         private readonly IConfiguration configuration;
         public MailController(IConfiguration configuration)
