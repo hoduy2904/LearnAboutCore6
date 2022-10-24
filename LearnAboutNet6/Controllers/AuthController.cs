@@ -159,6 +159,13 @@ namespace LearnAboutNet6.Controllers
                 return View();
             }
         }
+
+        public async Task<IActionResult> Logout()
+        {
+            await signInManager.SignOutAsync();
+            return RedirectToAction("Index","Home");
+        }
+
         public IActionResult ResetPassword(string token, string email)
         {
             return View(new ResetPasswordRequest { Token = token, Email = email });
