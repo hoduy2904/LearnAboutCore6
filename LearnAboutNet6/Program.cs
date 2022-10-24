@@ -1,4 +1,5 @@
 using LearnAboutNet6.Models;
+using LearnAboutNet6.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +15,20 @@ builder.Services.AddDbContext<CoreContext>(options =>
         builder.Configuration.GetConnectionString("CoreContext")
         );
 });
-builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<CoreContext>();
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+{
+    options.Password.RequiredLength = 4;
+    options.Password.RequireDigit = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+}).AddEntityFrameworkStores<CoreContext>().AddDefaultTokenProviders()
+.Services.ConfigureApplicationCookie(config =>
+{
+    config.LoginPath = "/Auth";
+});
+
+builder.Services.AddScoped<IMailServices, MailServices>();
 
 var app = builder.Build();
 

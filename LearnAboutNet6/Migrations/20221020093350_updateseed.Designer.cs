@@ -4,6 +4,7 @@ using LearnAboutNet6.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LearnAboutNet6.Migrations
 {
     [DbContext(typeof(CoreContext))]
-    partial class CoreContextModelSnapshot : ModelSnapshot
+    [Migration("20221020093350_updateseed")]
+    partial class updateseed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,10 +53,10 @@ namespace LearnAboutNet6.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "7af5f491-152e-4063-b721-0d91096d6f96",
-                            ConcurrencyStamp = "1b48212c-afad-4115-8edd-b8b02d8b9c48",
+                            Id = "dd5901f8-c187-46f2-b253-e5610c1e6b16",
+                            ConcurrencyStamp = "74545ab1-03c9-4f57-9d07-e1cba1f3b7e5",
                             Name = "Admin",
-                            NormalizedName = "ADMIN"
+                            NormalizedName = "admin"
                         });
                 });
 
@@ -150,15 +152,14 @@ namespace LearnAboutNet6.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "9481ed98-2610-4d4d-9055-7a639d79a697",
+                            Id = "a21ca373-d6e7-4468-a3d3-c08a7c250035",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "16a9e056-bb76-489f-b49b-6854fcde0238",
-                            EmailConfirmed = true,
+                            ConcurrencyStamp = "bb4a8f30-99df-48de-9dca-ac6d52a7cf05",
+                            EmailConfirmed = false,
                             LockoutEnabled = false,
-                            NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEISVmykjHAVUYWyKEkAcC8NsvOfHJdxHUDRGrYmDXjPOi5BzwQwJEJ/umd+Yyhf8gA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEEr4+zbXqNGkM0JKTEGCsahh3Xc2GV4kdMlE5AE2WuK8TLYPQU4WihuR0iQKmiNr3Q==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "7cf22bca-e7bb-4fe5-a4a8-5c92d671856f",
+                            SecurityStamp = "97278421-424a-499e-9069-ace73f30c91c",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         });
@@ -224,13 +225,6 @@ namespace LearnAboutNet6.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "9481ed98-2610-4d4d-9055-7a639d79a697",
-                            RoleId = "7af5f491-152e-4063-b721-0d91096d6f96"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
